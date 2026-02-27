@@ -89,6 +89,29 @@ GitHub Actions is configured in `.github/workflows/ci.yml`.
 - `tests` job: installs `.[core,ui,dev]`, runs `python -m pytest`, and verifies `import cme_core` does not load Streamlit
 - `playwright-smoke` job: installs `.[core,ui,dev,smoke]`, runs `scripts/run_playwright_smoke.sh`, and uploads the browser screenshot artifact
 
+## QA Bootstrap
+
+From a fresh shell at repo root:
+
+```bash
+git branch --show-current
+git rev-parse --short HEAD
+python3 -m pytest -q
+scripts/run_app.sh
+```
+
+If you only need the automated checks:
+
+```bash
+scripts/run_ui_smoke.sh
+scripts/run_playwright_smoke.sh
+```
+
+Notes:
+
+- Use `scripts/run_app.sh` instead of bare `streamlit run ...`; it does not depend on `streamlit` being on `PATH`.
+- The Playwright smoke writes `agent_artifacts/last_run/playwright_ui_smoke.png`.
+
 ## Run the App
 
 ```bash
