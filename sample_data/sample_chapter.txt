@@ -1,0 +1,13 @@
+Neuro ICU High-Yield Review
+
+Status Epilepticus
+
+Status epilepticus is a common neurocritical emergency because delayed control increases neuronal injury, mortality, and ICU length of stay. Initial therapy should prioritize rapid benzodiazepine delivery followed by a second-line antiseizure medication when seizures continue. A major pitfall is repeated under-dosing of first-line therapy, which delays escalation to refractory status epilepticus pathways.
+
+Refractory Status Epilepticus
+
+Refractory status epilepticus requires algorithmic escalation, continuous EEG, and careful hemodynamic management. Clinicians should weigh propofol, midazolam, and ketamine based on blood pressure targets, airway control, and the need for ongoing neuromonitoring. Super-refractory cases are rare but critical and may require salvage therapies at tertiary centers.
+
+Intracranial Pressure Management
+
+Intracranial pressure crises are high-stakes because herniation can cause irreversible neurologic injury. Management should emphasize head positioning, sedation, hyperosmolar therapy, and a cerebral perfusion pressure target that matches the patient's exam and imaging. Avoid routine hyperventilation except as a short bridge during acute deterioration.

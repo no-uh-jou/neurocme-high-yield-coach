@@ -1,0 +1,15 @@
+.DS_Store
+.pytest_cache/
+.github/.DS_Store
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.coverage
+htmlcov/
+
+agent_artifacts/
+
+# Unrelated local project in the same downloads folder
+MATLAB ICP Data Analysis Script/

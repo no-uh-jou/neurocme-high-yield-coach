@@ -1,0 +1,137 @@
+# NeuroCME High-Yield Coach
+
+NeuroCME High-Yield Coach is a Streamlit app with a reusable `cme_core` package for extracting high-yield topics from uploaded PDFs and open-access HTML pages. The core package is pure Python and does not import Streamlit, so it can be reused in other projects such as ICU Dashboard or Neurokit DAS.
+
+## Features
+
+- PDF ingest with page anchors
+- URL ingest with paragraph anchors and preview
+- Heuristic topic extraction and high-yield scoring without an LLM
+- Optional provider boundary for future LLM enhancement
+- Learning outputs: summaries, pitfalls, decision points, and Anki-ready Q/A
+- JSON, CSV, Markdown, and Anki TSV exports
+- Streamlit UI with filters for priority and level
+
+## Architecture
+
+### Core Schemas
+
+- `NormalizedDocument`: normalized source document with `title`, `source_type`, `source_ref`, `paragraphs`, and source metadata
+- `Paragraph`: extracted text span with `section_heading` and a `SourceAnchor`
+- `Chunk`: grouped paragraphs used for topic extraction and scoring
+- `Topic`: ranked teaching unit with `priority`, `level`, `rationale`, citations, learning outputs, and flashcards
+
+### Module Map
+
+- `cme_core.ingest`: stable facade for PDF and URL ingestion
+- `cme_core.extract`: stable facade for chunk extraction
+- `cme_core.rank`: stable facade for topic ranking
+- `cme_core.outputs`: serializers and learning/export outputs
+- `cme_core.ingest_pdf` / `cme_core.ingest_url`: source-specific normalization
+- `cme_core.chunking`: section-aware chunk construction
+- `cme_core.topics`: baseline topic labeling heuristics
+- `cme_core.scoring`: explainable priority and level heuristics with JSON-configured weights
+- `cme_core.llm_provider`: provider boundary for future LLM enrichment
+- `streamlit_app.app`: thin Streamlit entrypoint
+- `streamlit_app.ui_components`: UI rendering helpers only
+
+## Setup
+
+1. Create or activate a Python 3.9+ environment.
+2. Install the app dependencies:
+
+```bash
+python3 -m pip install -e ".[core,ui,dev]"
+```
+
+If you only want the portable core package:
+
+```bash
+python3 -m pip install -e ".[core,dev]"
+```
+
+If you want the Playwright browser smoke:
+
+```bash
+python3 -m pip install -e ".[core,ui,dev,smoke]"
+python3 -m playwright install chromium
+```
+
+## Run Tests
+
+```bash
+python3 -m pytest
+python3 -c "import cme_core; print('streamlit' in __import__('sys').modules)"
+```
+
+The second command should print `False`, which confirms `cme_core` does not import Streamlit.
+
+For the browserless Streamlit UI smoke test:
+
+```bash
+scripts/run_ui_smoke.sh
+```
+
+That smoke test uses Streamlit's built-in `AppTest` harness against the sample URL flow and verifies preview, analysis, filters, and export controls.
+
+For the full browser smoke, including PDF upload:
+
+```bash
+scripts/run_playwright_smoke.sh
+```
+
+That Playwright smoke launches the Streamlit app, exercises both the URL and PDF flows, verifies the export controls, and writes `agent_artifacts/last_run/playwright_ui_smoke.png`.
+
+## CI
+
+GitHub Actions is configured in `.github/workflows/ci.yml`.
+
+- `tests` job: installs `.[core,ui,dev]`, runs `python -m pytest`, and verifies `import cme_core` does not load Streamlit
+- `playwright-smoke` job: installs `.[core,ui,dev,smoke]`, runs `scripts/run_playwright_smoke.sh`, and uploads the browser screenshot artifact
+
+## Run the App
+
+```bash
+streamlit run streamlit_app/app.py
+```
+
+Use either:
+
+- the sample PDF at `sample_data/sample_page.pdf`
+- a URL served from this repo, for example:
+
+```bash
+python3 -m http.server 8000
+```
+
+Then open `http://localhost:8000/sample_data/sample_article.html` in the app's URL tab.
+
+## Optional LLM Key
+
+The baseline app works without an LLM. The provider boundary lives in `cme_core/llm_provider.py`.
+
+- Set `OPENAI_API_KEY` if you later add a concrete OpenAI-compatible provider.
+- No key is required for the current heuristic pipeline.
+
+## Portability Notes
+
+- `cme_core` has no Streamlit imports.
+- The public API is organized around:
+  - `cme_core.ingest`
+  - `cme_core.extract`
+  - `cme_core.rank`
+  - `cme_core.outputs`
+- Tests import only `cme_core`.
+- Uploaded PDFs can be processed in memory; the Streamlit layer does not persist them by default.
+- URL ingest fetches HTML only and degrades gracefully on failures.
+
+## Smoke Check
+
+1. Run `pytest`.
+2. Run `python3 -c "import cme_core"`.
+3. Run `streamlit run streamlit_app/app.py`.
+4. In the URL tab, fetch `http://localhost:8000/sample_data/sample_article.html`.
+5. In the PDF tab, upload `sample_data/sample_page.pdf`.
+6. Confirm the topic table, filters, expanders, and export buttons work in both flows.
+7. Run `scripts/run_ui_smoke.sh` for the automated URL-path UI smoke.
+8. Run `scripts/run_playwright_smoke.sh` for the automated browser smoke, including PDF upload.

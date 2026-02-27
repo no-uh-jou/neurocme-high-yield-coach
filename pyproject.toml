@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "neurocme-high-yield-coach"
+version = "0.1.0"
+description = "Portable CME topic extraction and ranking for PDF and HTML sources."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = []
+
+[project.optional-dependencies]
+core = [
+  "beautifulsoup4>=4.12",
+  "pypdf>=6.0",
+  "requests>=2.31",
+]
+ui = [
+  "streamlit>=1.41",
+]
+dev = [
+  "pytest>=8.0",
+]
+smoke = [
+  "playwright>=1.54",
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["cme_core*", "streamlit_app*"]
+
+[tool.setuptools.package-data]
+cme_core = ["scoring_config.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

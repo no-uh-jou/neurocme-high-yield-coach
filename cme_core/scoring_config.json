@@ -1,0 +1,18 @@
+{
+  "weights": {
+    "clinical_frequency": 0.24,
+    "high_stakes": 0.24,
+    "decision_density": 0.18,
+    "guideline_density": 0.14,
+    "pitfall_density": 0.12,
+    "rare_critical": 0.08
+  },
+  "normalizers": {
+    "clinical_frequency": 3.0,
+    "high_stakes": 3.0,
+    "decision_density": 5.0,
+    "guideline_density": 4.0,
+    "pitfall_density": 3.0,
+    "rare_critical": 2.0
+  }
+}
