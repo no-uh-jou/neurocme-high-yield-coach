@@ -92,8 +92,22 @@ GitHub Actions is configured in `.github/workflows/ci.yml`.
 ## Run the App
 
 ```bash
-streamlit run streamlit_app/app.py
+scripts/run_app.sh
 ```
+
+Equivalent module-based launch:
+
+```bash
+python3 -m streamlit run streamlit_app/app.py
+```
+
+If you want a clickable Desktop launcher on macOS named `NeuroCME`:
+
+```bash
+./scripts/install_neurocme_desktop_launcher.sh
+```
+
+That builds `~/Desktop/NeuroCME.app`, which starts or reuses NeuroCME on the first available local port and opens the app in your browser. If you move this repo later, rerun the installer so the Desktop launcher points to the new path.
 
 Use either:
 
@@ -129,7 +143,7 @@ The baseline app works without an LLM. The provider boundary lives in `cme_core/
 
 1. Run `pytest`.
 2. Run `python3 -c "import cme_core"`.
-3. Run `streamlit run streamlit_app/app.py`.
+3. Run `scripts/run_app.sh`.
 4. In the URL tab, fetch `http://localhost:8000/sample_data/sample_article.html`.
 5. In the PDF tab, upload `sample_data/sample_page.pdf`.
 6. Confirm the topic table, filters, expanders, and export buttons work in both flows.
