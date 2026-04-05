@@ -17,6 +17,7 @@ from streamlit_app.ui_components import (  # noqa: E402
     render_topic_details,
     topic_rows,
 )
+from streamlit_app.vascular_page import render_vascular_page  # noqa: E402
 
 APP_KEY = "analysis_result"
 URL_PREVIEW_KEY = "url_preview_document"
@@ -40,11 +41,13 @@ def main() -> None:
         )
         st.markdown("Only plain HTML fetch is supported for URLs. Uploads are processed in memory and not stored by default.")
 
-    pdf_tab, url_tab = st.tabs(["Upload PDF", "Paste URL"])
+    pdf_tab, url_tab, vascular_tab = st.tabs(["Upload PDF", "Paste URL", "Vascular US"])
     with pdf_tab:
         render_pdf_tab(options)
     with url_tab:
         render_url_tab(options)
+    with vascular_tab:
+        render_vascular_page()
 
     result = st.session_state.get(APP_KEY)
     if result:

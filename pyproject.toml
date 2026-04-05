@@ -19,6 +19,15 @@ core = [
 ui = [
   "streamlit>=1.41",
 ]
+vascular = [
+  "numpy>=1.24",
+  "opencv-python-headless>=4.8",
+  "scikit-image>=0.21",
+  "pydicom>=2.4",
+  "Pillow>=10.0",
+  "scipy>=1.11",
+  "pandas>=2.0",
+]
 dev = [
   "pytest>=8.0",
 ]
@@ -30,7 +39,7 @@ smoke = [
 include-package-data = true
 
 [tool.setuptools.packages.find]
-include = ["cme_core*", "streamlit_app*"]
+include = ["cme_core*", "streamlit_app*", "vascular_us*"]
 
 [tool.setuptools.package-data]
 cme_core = ["scoring_config.json"]
